@@ -1,0 +1,145 @@
+.navbar {
+  display: flex;
+  align-items: center;
+  padding: 1rem 0.5rem;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.menu {
+  background-color: salmon;
+  color: white;
+
+  //fazendo o menu pegar a tela toda e estar sempre nela -- algumas propriedades vao ser sobrescritas la embaixo, mas eh legal deixar aqui pra documentacao
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+
+  //posicionando filhos no meio
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+
+  //fazendo ele ficar oculto por padrao
+  //algumas propriedades de cima vao ser sobrescritas
+  visibility: hidden;
+  left: 100%;
+  transition: all 0.3s ease-in-out;
+  opacity: 0.2;
+
+  //quando ele tiver a classe ativa, mostra -- essa classe é controlada no js
+  &.ativo {
+    visibility: initial;
+    left: 0;
+    opacity: 1;
+  }
+}
+
+//os links do menu
+.menu-item {
+  margin: 0.5rem;
+  font-size: 1.8rem;
+  padding: 0.4rem;
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  //colocando umas frescurinha nos items
+  transition: all 0.2s;
+  &:hover {
+    background-color: #333;
+    transform: rotate(-10deg) translateY(-3px);
+    box-shadow: 0 10px 20px rgba($color: #000000, $alpha: 0.1);
+  }
+}
+
+.menu-toggle {
+  background-color: salmon;
+  height: 3rem;
+  width: 3rem;
+  border-radius: 50%;
+  border: none;
+  outline: none;
+  box-shadow: 0 1rem 3rem rgba(0, 0, 0, 0.3);
+
+  //isso aqui eh pra fazer ele ficar na esquerda
+  margin-left: auto;
+
+  //isso aqui eh pra poder posicionarmos as barrinhas
+  position: relative;
+}
+
+.menu-barrinhas {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+
+  //aplicando na barrinha em si, no before e no after
+  &,
+  &::before,
+  &::after {
+    width: 1.6rem;
+    height: 2px;
+    background-color: #fff;
+    display: inline-block;
+
+    //essa transition vai ajudar no efeitinho de girar os pauzinhos
+    transition: all 0.2s;
+  }
+
+  &::before,
+  &::after {
+    //isso eh obrigatorio pra fazer os pseudo elementos ficarem visiveis
+    content: "";
+    position: absolute;
+    left: 0;
+  }
+
+  //posicionando a de cima
+  &::before {
+    top: -0.5rem;
+  }
+
+  //posicionando a de baixo
+  &::after {
+    top: 0.5rem;
+  }
+}
+
+//se o menu estiver ativo, vamos modificar tambem o botao
+.menu.ativo {
+  //esse seletor com ~ permite estilizar um elemento vizinho, no caso .menu eh irmao de .menu-toggle, e quando .menu tiver tambem a classe .ativo queremos estilizar o .menu-toggle
+  & ~ .menu-toggle {
+    background-color: white;
+
+    //aqui vamos estilizar as barrinhas
+    .menu-barrinhas {
+      //fazendo o do meio sumir
+      background-color: transparent;
+
+      &::before,
+      &::after {
+        background-color: salmon;
+
+        //posicionando eles no topo pra girar
+        top: 0;
+      }
+
+      //girando um pra esquerda
+      &:before {
+        transform: rotate(135deg);
+      }
+
+      //girando o outro pra direita
+      &:after {
+        transform: rotate(-135deg);
+      }
+      //ta pronto o xzinho
+    }
+  }
+}
